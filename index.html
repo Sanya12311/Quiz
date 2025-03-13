@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .quiz-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h2 id="question">Loading...</h2>
+        <ul class="options" id="options"></ul>
+        <button onclick="nextQuestion()">Next</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the capital of France?",
+                options: ["Paris", "London", "Berlin", "Madrid"],
+                answer: "Paris"
+            },
+            {
+                question: "What is 2 + 2?",
+                options: ["3", "4", "5", "6"],
+                answer: "4"
+            },
+            {
+                question: "What is full form of WWW?",
+                options: ["World Wide Web", "World Wide World", "Wide World World", "World Web Wide"],
+                answer: "World Wide Web"
+            },
+            {
+                question: "Which is the largest river in the world?",
+                options: ["Ganga", "Amazon", "Nile", "Hoogly"],
+                answer: "Nile"
+            },
+            {
+                question: "In which year Bharat gets freedom form british?",
+                options: ["1967", "1957", "1947", "1937"],
+                answer: "1947"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const resultElement = document.getElementById("result");
+            
+            resultElement.innerHTML = "";
+            const currentQuestion = quizData[currentQuestionIndex];
+            
+            questionElement.innerText = currentQuestion.question;
+            optionsElement.innerHTML = "";
+            
+            currentQuestion.options.forEach(option => {
+                const li = document.createElement("li");
+                li.innerHTML = `<button onclick="checkAnswer('${option}')">${option}</button>`;
+                optionsElement.appendChild(li);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const resultElement = document.getElementById("result");
+            if (selectedOption === quizData[currentQuestionIndex].answer) {
+                resultElement.innerHTML = "Correct!";
+                resultElement.style.color = "green";
+            } else {
+                resultElement.innerHTML = "Wrong!";
+                resultElement.style.color = "red";
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                document.querySelector(".quiz-container").innerHTML = "<h2>Quiz Completed!</h2>";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
